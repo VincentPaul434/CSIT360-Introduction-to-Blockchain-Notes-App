@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 210 29% 98%;
+  --foreground: 210 18% 16%;
+  --card: 0 0% 100%;
+  --card-foreground: 210 18% 16%;
+  --primary: 200 33% 86%;
+  --primary-foreground: 202 28% 21%;
+  --secondary: 355 42% 95%;
+  --secondary-foreground: 346 18% 28%;
+  --muted: 205 31% 96%;
+  --muted-foreground: 210 10% 42%;
+  --accent: 42 48% 93%;
+  --accent-foreground: 30 20% 24%;
+  --border: 210 20% 84%;
+  --input: 210 20% 84%;
+  --ring: 202 28% 21%;
+  --radius: 0.2rem;
+  font-family: "IBM Plex Sans", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #edf2f6;
+  color: hsl(var(--foreground));
+  font-family: "IBM Plex Sans", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+}
