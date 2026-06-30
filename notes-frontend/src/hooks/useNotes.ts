@@ -23,7 +23,14 @@ export const useNotes = () => {
 
     try {
       const notes = await notesApi.getAll();
-      setState({ notes, isLoading: false, error: null });
+
+      // ✅ SORT PINNED FIRST
+      const sorted = [...notes].sort((a, b) => {
+        if (a.isPinned === b.isPinned) return 0;
+        return a.isPinned ? -1 : 1;
+      });
+
+      setState({ notes: sorted, isLoading: false, error: null });
     } catch (error) {
       setState({
         notes: [],
@@ -38,21 +45,34 @@ export const useNotes = () => {
   }, []);
 
   const createNote = async (payload: NotePayload): Promise<void> => {
-    const createdNote = await notesApi.create(payload);
+    const createdNote = await notesApi.create({
+      ...payload,
+      isPinned: false, 
+    });
 
-    setState((current) => ({
-      ...current,
-      notes: [createdNote, ...current.notes],
-    }));
+    setState((current) => {
+      const updated = [createdNote, ...current.notes];
+
+      return {
+        ...current,
+        notes: sortNotes(updated),
+      };
+    });
   };
 
   const updateNote = async (id: string, payload: NotePayload): Promise<void> => {
     const updatedNote = await notesApi.update(id, payload);
 
-    setState((current) => ({
-      ...current,
-      notes: current.notes.map((note) => (note.id === id ? updatedNote : note)),
-    }));
+    setState((current) => {
+      const updated = current.notes.map((note) =>
+        note.id === id ? updatedNote : note
+      );
+
+      return {
+        ...current,
+        notes: sortNotes(updated),
+      };
+    });
   };
 
   const deleteNote = async (id: string): Promise<void> => {
@@ -64,11 +84,43 @@ export const useNotes = () => {
     }));
   };
 
+  // ✅ PIN TOGGLE (API + UI)
+  const togglePin = async (id: string): Promise<void> => {
+    const note = state.notes.find((n) => n.id === id);
+    if (!note) return;
+
+    const updatedNote = await notesApi.update(id, {
+      title: note.title,
+      content: note.content,
+      isPinned: !note.isPinned, 
+    });
+
+    setState((current) => {
+      const updated = current.notes.map((n) =>
+        n.id === id ? updatedNote : n
+      );
+
+      return {
+        ...current,
+        notes: sortNotes(updated),
+      };
+    });
+  };
+
+  // ✅ HELPER
+  const sortNotes = (notes: Note[]) => {
+    return [...notes].sort((a, b) => {
+      if (a.isPinned === b.isPinned) return 0;
+      return a.isPinned ? -1 : 1;
+    });
+  };
+
   return {
     ...state,
     reload: loadNotes,
     createNote,
     updateNote,
     deleteNote,
+    togglePin,
   };
 };
