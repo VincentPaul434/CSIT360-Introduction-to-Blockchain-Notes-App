@@ -100,24 +100,24 @@ export const NoteForm = ({
   };
 
   return (
-    <form className="rounded-[1rem_0.2rem_0.2rem_1rem] border border-[#d4dce5] bg-white p-6 shadow-card" onSubmit={handleSubmit}>
-      <div className="flex flex-wrap items-start justify-between gap-4">
+    <form className="rounded-[0.85rem_0.2rem_0.85rem_0.2rem] border border-[#d8d8e4] bg-[#f5f4f9] p-6 shadow-card" onSubmit={handleSubmit}>
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.24em] text-[#b9ad9a]">Editor</p>
-          <h3 className="mt-2 text-2xl font-semibold text-slate-950">
+          <p className="text-xs font-medium uppercase tracking-[0.28em] text-[#6c6987]">Editor</p>
+          <h2 className="mt-2 text-[1.8rem] font-semibold tracking-[-0.03em] text-slate-950">
             {selectedNote ? "Update note" : "Create note"}
-          </h3>
+          </h2>
         </div>
 
-        <div className="flex items-center gap-2 rounded border border-[#e1d6cb] bg-[#faf3ea] px-3 py-2 text-xs text-[#7a6554]">
-          <Clock3 className="h-3.5 w-3.5" />
+        <div className="flex items-center gap-2 rounded border border-[#e1d6cb] bg-[#faf3ea] px-3 py-1.5 text-xs text-[#7a6554]">
+          <Clock3 className="h-3 w-3" />
           {selectedNote ? "Existing draft" : "Unsaved draft"}
         </div>
       </div>
 
-      <Separator className="my-5 bg-[#f2eadf]" />
+      <Separator className="my-4 bg-[#ede9e0]" />
 
-      <div className="space-y-5">
+      <div className="space-y-4">
         <div>
           <label className="text-sm font-medium text-slate-800">Title</label>
           <Input
@@ -137,11 +137,12 @@ export const NoteForm = ({
               setFormState((prev) => ({ ...prev, content: e.target.value }))
             }
             required
+            className="min-h-[240px]"
           />
         </div>
       </div>
 
-      <div className="mt-6 flex gap-3">
+      <div className="mt-5 flex gap-3 justify-end">
         <Button type="submit" disabled={isSubmitting}>
           <Save className="mr-2 h-4 w-4" />
           {selectedNote ? "Save changes" : "Create note"}
